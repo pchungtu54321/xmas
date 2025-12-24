@@ -1,0 +1,3 @@
+{
+    "rewrites": [{ "source": "/(.*)", "destination": "/chistmas_tree_final.html" }]
+}
