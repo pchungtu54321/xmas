@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grand Luxury Tree - Adaptive Hand Gestures</title>
+    <title>Merry Christmas My Huyen</title>
     <style>
         body { margin: 0; overflow: hidden; background-color: #000000; font-family: 'Times New Roman', serif; }
         #canvas-container { width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 1; }
@@ -160,7 +160,7 @@
     </script>
 </head>
 <body>
-
+    <audio id="bgm" src="./music.mp3" loop preload="auto"></audio>
     <div id="loader">
         <div class="spinner"></div>
         <div class="loader-text">Loading Memories</div>
@@ -256,6 +256,8 @@
             loadPredefinedImages();
             setupPostProcessing();
             setupEvents();
+            setupBackgroundMusic();
+            
             await initMediaPipe();
             
             const loader = document.getElementById('loader');
@@ -263,6 +265,29 @@
             setTimeout(() => loader.remove(), 800);
 
             animate();
+        }
+
+        function setupBackgroundMusic() {
+            const bgm = document.getElementById('bgm');
+            if (!bgm) return;
+
+            bgm.volume = 0.35; // adjust 0.0 - 1.0
+
+            const start = async () => {
+                try {
+                await bgm.play();
+                window.removeEventListener('pointerdown', start);
+                window.removeEventListener('keydown', start);
+                } catch (e) {
+                // Autoplay still blocked; user may need another click
+                console.warn("BGM play blocked:", e);
+                }
+            };
+
+            // Try immediately (may be blocked), then unlock on first interaction
+            start();
+            window.addEventListener('pointerdown', start, { once: true });
+            window.addEventListener('keydown', start, { once: true });
         }
 
         // --- 增强版图片加载系统 ---
